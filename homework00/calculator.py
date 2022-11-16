@@ -10,7 +10,10 @@ def schitalka(meow: float, bark: float, command: str):
     elif command == "-":
         return meow - bark
     elif command == "/":
-        return meow / bark
+        if bark == 0:
+            print("Деление на ноль невозможно! Попробуйте еще раз")
+        else:
+            return meow / bark
     elif command == "*":
         return meow * bark
     elif command == "2":
@@ -26,7 +29,10 @@ def schitalka(meow: float, bark: float, command: str):
     elif command == "lg":
         return log(meow, 10)
     elif command == "log":
-        return log(meow, bark)
+        if int(bark) > 0:
+            return log(meow, bark)
+        else:
+            print("Основание не может быть отрицательным! Попробуйте заново")
     elif command == "**":
         return meow**bark
     else:
@@ -35,7 +41,7 @@ def schitalka(meow: float, bark: float, command: str):
 
 if __name__ == "__main__":
     oper_with_odno_chislo = ["sin", "cos", "tg", "2", "ln", "lg"]
-    oper_with_dva_chisla = ["+-*/", "**"]
+    oper_with_dva_chisla = ["+", "-", "*", "/", "**"]
     oper_log = "log"
     while True:
         COMMAND = input("Введите операцию > ")
