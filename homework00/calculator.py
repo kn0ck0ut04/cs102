@@ -30,9 +30,12 @@ def schitalka(meow: float, bark: float, command: str):
         return log(meow, 10)
     elif command == "log":
         if int(bark) > 0:
-            return log(meow, bark)
+            if int(meow) > 0:
+                return log(meow, bark)
+            else:
+                print('Аргумент логарифма не может быть отрицательным или равным нулю! Попробуйте заново')
         else:
-            print("Основание не может быть отрицательным! Попробуйте заново")
+            print("Основание не может быть отрицательным или равным нулю! Попробуйте заново")
     elif command == "**":
         return meow**bark
     else:
@@ -48,13 +51,30 @@ if __name__ == "__main__":
         if COMMAND.isdigit() and int(COMMAND) == 0:
             break
         if COMMAND in oper_with_dva_chisla:
-            MEOW = float(input("Первое число > "))
-            BARK = float(input("Второе число > "))
+            while True:
+                try:
+                    MEOW = float(input("Первое число: > "))
+                    BARK = float(input("Второе число: > "))
+                    break
+                except ValueError:
+                    print("Вы ввели не число. Попробуйте еще раз")
             print(schitalka(MEOW, BARK, COMMAND))
         elif COMMAND in oper_with_odno_chislo:
-            MEOW = float(input("Число > "))
+            while True:
+                try:
+                    MEOW = float(input("Число: > "))
+                    break
+                except ValueError:
+                    print("Вы ввели не число. Попробуйте еще раз")
             print(schitalka(MEOW, 0, COMMAND))
         elif COMMAND in oper_log:
-            MEOW = float(input("Основание > "))
-            BARK = float(input("Число > "))
+            while True:
+                try:
+                    MEOW = float(input("Основание: > "))
+                    BARK = float(input("Число: > "))
+                    break
+                except ValueError:
+                    print("Вы ввели не число. Попробуйте еще раз")
             print(schitalka(BARK, MEOW, COMMAND))
+        else:
+            print('Неизвестная операция. Попробуйте еще раз')
