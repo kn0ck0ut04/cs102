@@ -14,8 +14,8 @@ def is_prime(n: int) -> bool:
     """
     if n < 2:
         return False
-    for i in range(2, int(n**0.5) + 1, 2):
-        if n % i == 0:
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 1:
             return False
     return True
 
@@ -29,9 +29,8 @@ def gcd(a: int, b: int) -> int:
     1
     """
     if b == 0:
-        return abs(a)
-    else:
-        return gcd(b, a % b)
+        return a
+    return gcd(b, a % b)
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -53,7 +52,6 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     for i in range(len(lst)):
         x, y = y, x - y * lst[length_lst - 1 - i]
     return y % phi
-    pass
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -115,5 +113,3 @@ if __name__ == "__main__":
     print("Decrypting message with public key ", public, " . . .")
     print("Your message is:")
     print(decrypt(public, encrypted_msg))
-
-# for push
