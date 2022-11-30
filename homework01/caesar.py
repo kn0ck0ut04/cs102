@@ -15,15 +15,15 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     alph_len = ord("z") - ord("a") + 1
 
     for i in plaintext:
-        if i.isupper() == False and i.islower() == False:
-            ciphertext += i
-            continue
         if i.islower():
             index = (ord(i) - ord("a") + shift) % alph_len
             ciphertext += chr(ord("a") + index)
         elif i.isupper():
             index = (ord(i) - ord("A") + shift) % alph_len
             ciphertext += chr(ord("A") + index)
+        else:
+            ciphertext += i
+            continue
     return ciphertext
 
 
@@ -42,3 +42,6 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
     plaintext = encrypt_caesar(ciphertext, ord("z") - ord("a") - shift + 1)
     return plaintext
+
+
+print(encrypt_caesar("PYTHON python3.6"))
