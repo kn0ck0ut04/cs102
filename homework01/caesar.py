@@ -42,6 +42,3 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     """
     plaintext = encrypt_caesar(ciphertext, ord("z") - ord("a") - shift + 1)
     return plaintext
-
-
-print(encrypt_caesar("PYTHON python3.6"))
