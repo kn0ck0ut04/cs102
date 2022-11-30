@@ -9,7 +9,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    len_alphabet = ord('z') - ord('a') + 1
+    len_alphabet = ord("z") - ord("a") + 1
 
     for i in range(len(plaintext)):
         if plaintext[i].islower():
@@ -35,7 +35,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
 
     plaintext = ""
-    len_alphabet = ord('z') - ord('a') + 1
+    len_alphabet = ord("z") - ord("a") + 1
 
     for i in range(len(ciphertext)):
         if ciphertext[i].islower():
