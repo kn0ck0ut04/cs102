@@ -31,6 +31,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
     'ATTACKATDAWN'
     """
+
     plaintext = ""
     for i in range(len(ciphertext)):
         if ord("a") <= ord(ciphertext) <= ord("z"):
@@ -41,4 +42,5 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             plaintext += chr((ord(ciphertext) - shift - ord("A")) % 26 + ord("A"))
         else:
             plaintext += ciphertext[i]
+
     return plaintext
