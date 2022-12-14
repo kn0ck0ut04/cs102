@@ -168,22 +168,17 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     pos = find_empty_positions(grid)
     if pos is None:
         return grid
-    else:
-        values = find_possible_values(grid, pos)
-        if len(values) == 0:
-            return grid
-        for t in values:
-            grid[pos[0]][pos[1]] = t
-            grid = solve(grid)
-            if not find_empty_positions(grid):
-                return grid
-            grid[pos[0]][pos[1]] = "."
-        return grid
+    for possible_value in find_possible_values(grid, pos):
+        grid[pos[0]][pos[1]] = possible_value
+        res = solve(grid)
+        if res:
+            return res
+        grid[pos[0]][pos[1]] = "."
+    return None
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
-    # TODO: Add doctests with bad puzzles
     for i in range(9):
         pos = (0, i)
         test = get_col(solution, pos)
@@ -227,15 +222,20 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     True
     """
     grid = [["." for i in range(9)] for j in range(9)]
-    grid = solve(grid)
+    if N == 0:
+        return grid
+    solution = solve(grid)
+    if solution is None:
+        return grid
     if N > 81:
-        N = 81
-    for i in range(81 - N):
+        return solution
+    counter = 81 - N
+    for _ in range(81 - N):
         x, y = randint(0, 8), randint(0, 8)
-        while grid[x][y] == ".":
+        while solution[x][y] == ".":
             x, y = randint(0, 8), randint(0, 8)
-        grid[x][y] = "."
-    return grid
+        solution[x][y] = "."
+    return solution
 
 
 def run_solve(filename: str) -> None:
