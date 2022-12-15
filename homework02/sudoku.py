@@ -116,10 +116,10 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    values = set("123456789") 
-    row = set(get_row(grid, pos)) 
-    col = set(get_col(grid, pos)) 
-    block = set(get_block(grid, pos)) 
+    values = set("123456789")
+    row = set(get_row(grid, pos))
+    col = set(get_col(grid, pos))
+    block = set(get_block(grid, pos))
     return values - row - block - col
 
 
@@ -149,7 +149,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
-    values = set('123456789')
+    values = set("123456789")
     for i in range(9):
         for j in range(9):
             pos = (i, j)
@@ -160,7 +160,6 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             if set(get_block(solution, pos)) != values:
                 return False
     return True
-
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
