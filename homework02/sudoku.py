@@ -70,11 +70,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    res = []
-
-    for t in grid:
-        res.append(t[pos[1]])
-    return res
+    return [i[pos[1]] for i in grid]
 
 
 def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -87,15 +83,9 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    cell = [0, 0]
-    cell[0] = pos[0] // 3
-    cell[1] = pos[1] // 3
-    res = []
-
-    for j in range(3 * cell[0], 3 * cell[0] + 3):
-        for i in range(3 * cell[1], 3 * cell[1] + 3):
-            res.append(grid[j][i])
-    return res
+    cor = (pos[0] // 3 * 3, pos[1] // 3 * 3)
+    list2x = [grid[i + cor[0]][cor[1] : cor[1] + 3] for i in range(0, 3)]
+    return [item for sublist in list2x for item in sublist]
 
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
@@ -126,31 +116,11 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    row = get_row(grid, pos)
-    col = get_col(grid, pos)
-    block = get_block(grid, pos)
-
-    pos_row = []
-    pos_col = []
-    pos_block = []
-
-    for d in "123456789":
-        if d not in row:
-            pos_row.append(d)
-
-    for d in "123456789":
-        if d not in col:
-            pos_col.append(d)
-
-    for d in "123456789":
-        if d not in block:
-            pos_block.append(d)
-
-    res = []
-    for t in pos_row:
-        if t in pos_col and t in pos_block:
-            res.append(t)
-    return set(res)
+    values = set("123456789") 
+    row = set(get_row(grid, pos)) 
+    col = set(get_col(grid, pos)) 
+    block = set(get_block(grid, pos)) 
+    return values - row - block - col
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
@@ -179,25 +149,18 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
+    values = set('123456789')
     for i in range(9):
-        pos = (0, i)
-        test = get_col(solution, pos)
-        for d in "123456789":
-            if d not in test:
+        for j in range(9):
+            pos = (i, j)
+            if set(get_row(solution, pos)) != values:
                 return False
-
-        pos = (i, 0)
-        test = get_row(solution, pos)
-        for d in "123456789":
-            if d not in test:
+            if set(get_col(solution, pos)) != values:
                 return False
-
-        pos = ((i * 3) % 9, (i * 3) // 9)
-        test = get_block(solution, pos)
-        for d in "123456789":
-            if d not in test:
+            if set(get_block(solution, pos)) != values:
                 return False
     return True
+
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
@@ -221,7 +184,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    grid = [["." for i in range(9)] for j in range(9)]
+    grid = [["."] * 9 for _ in range(9)]
     if N == 0:
         return grid
     solution = solve(grid)
@@ -230,11 +193,11 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     if N > 81:
         return solution
     counter = 81 - N
-    for _ in range(81 - N):
+    while counter > 0:
         x, y = randint(0, 8), randint(0, 8)
-        while solution[x][y] == ".":
-            x, y = randint(0, 8), randint(0, 8)
-        solution[x][y] = "."
+        if solution[x][y] != ".":
+            solution[x][y] = "."
+            counter -= 1
     return solution
 
 
