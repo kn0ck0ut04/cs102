@@ -57,8 +57,6 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
             action = choice(random_action)
             if action == 1:
                 if row_cor == 1:
-                    if col_cor + 1 == cols - 1:
-                        continue
                     remove_wall(grid, (row_cor, col_cor + 1))
                 elif col_cor + 1 < cols - 1:
                     remove_wall(grid, (row_cor, col_cor + 1))
@@ -184,32 +182,29 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :param coord:
     :return:
     """
-
-    ans = False
-
     if (
         coord == (0, 0)
         or coord == (len(grid) - 1, len(grid[0]) - 1)
         or coord == (len(grid) - 1, 0)
         or coord == (0, len(grid[0]) - 1)
     ):
-        ans = True
+        return True
     elif coord[0] == 0:
         if grid[1][coord[1]] != " ":
-            ans = True
+            return True
 
     elif coord[1] == 0:
         if grid[coord[0]][1] != " ":
-            ans = True
+            return True
 
     elif coord[0] == len(grid) - 1:
         if grid[len(grid) - 2][coord[1]] != " ":
-            ans = True
+            return True
 
     elif coord[1] == len(grid[0]) - 1:
         if grid[coord[0]][len(grid[0]) - 2] != " ":
-            ans = True
-    return ans
+            return True
+    return False
 
 
 def solve_maze(grid: List[List[Union[str, int]]]):
