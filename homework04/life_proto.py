@@ -105,11 +105,9 @@ class GameOfLife:
                 y = j * self.cell_size
                 # клетка живая - зеленый цвет, мертвая - белый
                 if self.grid[i][j]:
-                    pygame.draw.rect(self.screen, pygame.Color('green'), (x, y, self.cell_size, self.cell_size))
+                    pygame.draw.rect(self.screen, pygame.Color("green"), (x, y, self.cell_size, self.cell_size))
                 else:
-                    pygame.draw.rect(self.screen, pygame.Color('white'), (x, y, self.cell_size, self.cell_size))
-
-
+                    pygame.draw.rect(self.screen, pygame.Color("white"), (x, y, self.cell_size, self.cell_size))
 
     def get_neighbours(self, cell: Cell) -> Cells:
         if self.grid is None:
@@ -133,7 +131,7 @@ class GameOfLife:
         out : Grid
             Новое поколение клеток.
         """
-        
+
         # создаем новое поле из 0
         new_grid = [[0 for _ in range(self.cell_width)] for __ in range(self.cell_height)]
         if self.grid is None:

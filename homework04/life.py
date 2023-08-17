@@ -85,7 +85,6 @@ class GameOfLife:
         else:
             return False
 
-
     @property
     def is_changing(self) -> bool:
         """
@@ -120,4 +119,3 @@ class GameOfLife:
         with open(filename, "w") as f:
             for line in self.curr_generation:
                 f.write("".join(map(str, line)) + "\n")
-
