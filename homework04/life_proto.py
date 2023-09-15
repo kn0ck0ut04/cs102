@@ -49,8 +49,8 @@ class GameOfLife:
         self.screen.fill(pygame.Color("white"))
 
         # Создание списка клеток
-        self.grid = self.create_grid(randomize=True)  # type: ignore
-
+        
+        self.grid = self.create_grid(randomize=True)
         running = True
         while running:
             for event in pygame.event.get():
@@ -59,11 +59,10 @@ class GameOfLife:
 
             self.draw_grid()
             self.draw_lines()
-            self.grid = copy.deepcopy(self.get_next_generation())  # type: ignore
+            self.grid = copy.deepcopy(self.get_next_generation())
 
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -97,13 +96,10 @@ class GameOfLife:
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
 
-        # перебираем все клетки в списке
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
-                # получаем координаты клетки
                 x = i * self.cell_size
                 y = j * self.cell_size
-                # клетка живая - зеленый цвет, мертвая - белый
                 if self.grid[i][j]:
                     pygame.draw.rect(self.screen, pygame.Color("green"), (x, y, self.cell_size, self.cell_size))
                 else:
@@ -131,17 +127,12 @@ class GameOfLife:
         out : Grid
             Новое поколение клеток.
         """
-
-        # создаем новое поле из 0
         new_grid = [[0 for _ in range(self.cell_width)] for __ in range(self.cell_height)]
         if self.grid is None:
             return new_grid
-        # обходим все клетки поля
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                # получаем соседей заданной клетки
                 alive_neighbors = sum(self.get_neighbours((i, j)))
-                # если соседей 2 и существо живое или 3, то клетка выживает
                 if alive_neighbors == 2 and self.grid[i][j] == 1 or alive_neighbors == 3:
                     new_grid[i][j] = 1
         return new_grid

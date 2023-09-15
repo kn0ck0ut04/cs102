@@ -51,16 +51,12 @@ class GameOfLife:
         return list_neighbours
 
     def get_next_generation(self) -> Grid:
-        # создаем новое поле из 0
         new_grid = [[0 for _ in range(self.cell_width)] for __ in range(self.cell_height)]
         if self.curr_generation is None:
             return new_grid
-        # обходим все клетки поля
         for i in range(self.cell_height):
             for j in range(self.cell_width):
-                # получаем соседей заданной клетки
                 alive_neighbors = sum(self.get_neighbours((i, j)))
-                # если соседей 2 и существо живое или 3, то клетка выживает
                 if alive_neighbors == 2 and self.curr_generation[i][j] == 1 or alive_neighbors == 3:
                     new_grid[i][j] = 1
         return new_grid
@@ -69,10 +65,7 @@ class GameOfLife:
         """
         Выполнить один шаг игры.
         """
-        # количество поколений увеличиваем на 1
         self.generations += 1
-        # в предыдущее поколение записываем нынешнее поколение,
-        # а в нынешнее поколение след. поколение
         self.prev_generation, self.curr_generation = copy.deepcopy(self.curr_generation), self.get_next_generation()
 
     @property
@@ -80,7 +73,7 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        if self.generations is not None and int(self.generations) >= self.max_generations:
+        if self.generations is not None and self.generations >= (self.max_generations or float("inf")):
             return True
         else:
             return False

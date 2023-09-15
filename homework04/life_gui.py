@@ -1,4 +1,4 @@
-import time
+import sys
 
 import pygame
 
@@ -9,10 +9,14 @@ from ui import UI
 class GUI(UI):
     def __init__(self, life: GameOfLife, cell_size: int = 10, speed: int = 10) -> None:
         super().__init__(life)
+        self.cell_size = cell_size
+        screen = pygame.display.set_mode([self.life.cell_height, self.life.cell_width])
+        self.screen = screen
+        self.speed = speed
 
     def draw_lines(self) -> None:
-        x_start, x_end = 0, self.width * self.cell_size
-        y_start, y_end = 0, self.height * self.cell_size
+        x_start, x_end = 0, self.life.cell_width * self.cell_size
+        y_start, y_end = 0, self.life.cell_height * self.cell_size
 
         for x in range(x_start, x_end, self.cell_size):
             pygame.draw.line(
@@ -31,8 +35,8 @@ class GUI(UI):
             )
 
     def draw_grid(self) -> None:
-        for y in range(self.cell_height):
-            for x in range(self.cell_width):
+        for y in range(self.life.cell_height):
+            for x in range(self.life.cell_width):
                 rect = pygame.Rect(
                     x * self.cell_size,
                     y * self.cell_size,
@@ -46,32 +50,38 @@ class GUI(UI):
 
     def run(self) -> None:
         pygame.init()
+        screen = pygame.display.set_mode([self.life.cell_height, self.life.cell_width])
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
-        self.screen.fill(pygame.Color("white"))
+        screen.fill(pygame.Color("white"))
         running = True
-        start = False  # игра началась
-        can_add = True  # можно ли еще закрашивать на поле клетки
+        start = False
+        can_add = True
         while running and not self.life.is_max_generations_exceeded and self.life.is_changing:
-            for event in pygame.event.get():  # получаем события с клавиатуры или мышки
-                if event.type == pygame.QUIT:  # если игру закрыли, то выходим из цикла
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:  # проверяем была ли нажата кнопка мыши
-                    if can_add:  # проверяем можно ли добавлять
-                        x, y = event.pos  # считываем координаты нажатой мышки
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if can_add:
+                        x, y = event.pos
                         self.life.curr_generation[y // self.cell_size][x // self.cell_size] = (
                             self.life.curr_generation[y // self.cell_size][x // self.cell_size] + 1
-                        ) % 2  # в текущем
-                        # состоянии меняем значение нажатой клетки (клетка либо белая, либо зеленая)
-                if event.type == 769:  # код пробела
-                    start = not start  # меняем состояние игры (пауза/плей)
-                    can_add = False  # как только запускаем игру, менять клетки уже нельзя
+                        ) % 2
+                if event.type == 769:
+                    start = not start
+                    can_add = False
 
-            if start:  # если игра запущена, то делаем след. шаг
+            if start:
                 self.life.step()
-            self.draw_grid()  # отрисовываем поле и линии
+            self.draw_grid()
             self.draw_lines()
             pygame.display.flip()
             clock.tick(self.speed)
-        time.sleep(10)
+        pygame.display.quit()
         pygame.quit()
+        sys.exit()
+
+if __name__ == '__main__':
+    game = GameOfLife((400, 400))
+    ui = GUI(game)
+    ui.run()
