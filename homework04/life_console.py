@@ -43,7 +43,8 @@ class Console(UI):
         time.sleep(1)
         curses.endwin()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     game = GameOfLife((17, 150))
     ui = Console(game)
     ui.run()

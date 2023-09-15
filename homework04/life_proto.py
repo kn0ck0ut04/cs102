@@ -49,8 +49,8 @@ class GameOfLife:
         self.screen.fill(pygame.Color("white"))
 
         # Создание списка клеток
-        
-        self.grid = self.create_grid(randomize=True)
+
+        self.grid = self.create_grid(randomize=True)  # type: ignore
         running = True
         while running:
             for event in pygame.event.get():
@@ -59,7 +59,7 @@ class GameOfLife:
 
             self.draw_grid()
             self.draw_lines()
-            self.grid = copy.deepcopy(self.get_next_generation())
+            self.grid = copy.deepcopy(self.get_next_generation())  # type: ignore
 
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
@@ -96,11 +96,11 @@ class GameOfLife:
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
 
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[0])):
+        for i in range(len(self.grid)):  # type: ignore
+            for j in range(len(self.grid[0])):  # type: ignore
                 x = i * self.cell_size
                 y = j * self.cell_size
-                if self.grid[i][j]:
+                if self.grid[i][j]:  # type: ignore
                     pygame.draw.rect(self.screen, pygame.Color("green"), (x, y, self.cell_size, self.cell_size))
                 else:
                     pygame.draw.rect(self.screen, pygame.Color("white"), (x, y, self.cell_size, self.cell_size))
